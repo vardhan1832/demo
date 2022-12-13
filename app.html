@@ -60,21 +60,16 @@
 
         function signup(event){
           event.preventDefault();
-          let user = event.target.username.value;
-          let mail = event.target.Email.value;
-          let userPass = event.target.pass.value;
-          let callDate = event.target.date.value;
-          let callTime = event.target.time.value;
-          localStorage.setItem('username', user);
-          localStorage.setItem('email' , mail);
-          localStorage.setItem('password' , userPass);
-          localStorage.setItem('date' , callDate);
-          localStorage.setItem('time' , callTime);
-          console.log(user)
-          console.log(mail)
-          console.log(userPass)
-          console.log(callDate)
-          console.log(callTime)
+          let userObj={
+            user : event.target.username.value,
+           mail : event.target.Email.value,
+           userPass : event.target.pass.value,
+           callDate : event.target.date.value,
+           callTime : event.target.time.value,
+          }
+          let objString = JSON.stringify(userObj);
+          localStorage.setItem('userDetails' , objString);
+          //console.log(objString);
         }
     </script>
 </body>
