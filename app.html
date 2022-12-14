@@ -70,6 +70,8 @@
         </section>
     <script>
 
+        let itemList = document.getElementById('items');
+
         function signup(event){
           event.preventDefault();
           let userObj={
@@ -82,26 +84,39 @@
           let objString = JSON.stringify(userObj);
           localStorage.setItem(userObj.mail , objString);
           //console.log(objString);
-          let itemList = document.getElementById('items');
+    
           let li = document.createElement('li');
           li.className='list-group-item';
           let userInfo = `${userObj.user}: ${userObj.mail}`;
+          li.id = userObj.mail;
           li.appendChild(document.createTextNode(userInfo));
 
           var deleteBtn = document.createElement('button');
          deleteBtn.className = 'btn btn-danger float-right btn-sm delete';
-         deleteBtn.style.margin= '2px';
-         deleteBtn.style.marginLeft = '20px';
+        
          deleteBtn.appendChild(document.createTextNode('X'));
           li.appendChild(deleteBtn);
           var editBtn = document.createElement('button');
          editBtn.className = 'btn btn-warning btn-sm float-right edit';
-         editBtn.style.margin = '3px';
+        
          editBtn.appendChild(document.createTextNode('edit'));
          li.appendChild(editBtn);
           itemList.appendChild(li);
+          console.log(li.id);
+         
         }
-
+        itemList.addEventListener('click', removeItem);
+        function removeItem(e){
+         if(e.target.classList.contains('delete')){
+          if(confirm('Are You Sure?')){
+            var li = e.target.parentElement;
+           itemList.removeChild(li);
+              }
+            }
+        }
+      
+          
+   
     </script>
 </body>
 </html>
