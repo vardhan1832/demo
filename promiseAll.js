@@ -41,8 +41,6 @@ let posts = [];
                     console.log('posts after deletion: ')
                    resolve(posts);
                 })
-                
-            
         })
     }
     Promise.all([updateUserActivityTime(),createPosts(),createPost2(),createPost3(),updateUserActivityTime()]).then((values)=>{
