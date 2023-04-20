@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+    let posts = [];
+    let userActivityTime ;
+    function updateUserActivityTime(){
+         return new Promise((resolve,reject)=>{
+             setTimeout(() => {
+                userActivityTime = new Date().getTime();
+                console.log('new user time is: ')
+                resolve(userActivityTime);
+             }, 1000);
+         })
+    }
+    function createPosts(){
+        return new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                posts.push({title : 'post1'});
+                resolve(posts);
+            },1000)
+        })
+    }
+    function createPost2(){
+        return new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                posts.push({title : 'post2'});
+                resolve(posts);
+            },1000)
+        })
+    }
+    function createPost3(){
+        return new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                posts.push({title : 'post3'});
+                resolve(posts);
+            },1000)
+        })
+    }
+    function delPosts(){
+        return new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+
+                    posts.pop();
+                    console.log('posts after deletion: ')
+                   resolve(posts);
+                })
+                
+            
+        })
+    }
+    Promise.all([updateUserActivityTime(),createPosts(),createPost2(),createPost3(),updateUserActivityTime()]).then((values)=>{
+       console.log(values)
+      
+    }).then(()=>{
+        delPosts().then(value=>{
+        console.log(value)
+       })
+
+    })
+    
+
+   </script>
+</body>
+</html>
