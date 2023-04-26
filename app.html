@@ -28,7 +28,7 @@
          }
              .container {
                margin: auto;
-                width: 500px;
+                width: 600px;
                  overflow: auto;
                  padding: 3rem 2rem;
                 }
@@ -48,7 +48,7 @@
           </div>
     </header>
         <section  class="container ">
-            <div class="card card-body bg-success">
+            <div class="card">
             <form class="form-control form-control-sm bg-dark text-white border border-dark" action="#" onsubmit="signup(event)">
               <h1 style="text-align: center;">Book a Call</h1>
               <p >Book a call slot and our representative will call you within 1hr of the selected time.</p>
@@ -68,43 +68,30 @@
           </ul>
         </div>
         </section>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script>
 
         let itemList = document.getElementById('items');
 
         function signup(event){
-          event.preventDefault();
-          let userObj={
-            user : event.target.username.value,
-           mail : event.target.Email.value,
-           userPass : event.target.pass.value,
-           callDate : event.target.date.value,
-           callTime : event.target.time.value,
-          }
-          let objString = JSON.stringify(userObj);
-          localStorage.setItem(userObj.mail , objString);
-          //console.log(objString);
-    
-          let li = document.createElement('li');
-          li.className='list-group-item';
-          let userInfo = `${userObj.user}: ${userObj.mail}`;
-          li.id = userObj.mail;
-          li.appendChild(document.createTextNode(userInfo));
-
-          var deleteBtn = document.createElement('button');
-         deleteBtn.className = 'btn btn-danger float-right btn-sm delete';
-        
-         deleteBtn.appendChild(document.createTextNode('X'));
-          li.appendChild(deleteBtn);
-          var editBtn = document.createElement('button');
-         editBtn.className = 'btn btn-warning btn-sm float-right edit';
-        
-         editBtn.appendChild(document.createTextNode('edit'));
-         li.appendChild(editBtn);
-          itemList.appendChild(li);
-          console.log(li.id);
-         
+            event.preventDefault();
+            let userObj={
+                user : event.target.username.value,
+                mail : event.target.Email.value,
+                userPass : event.target.pass.value,
+                callDate : event.target.date.value,
+                callTime : event.target.time.value,
+            }
+            //   let objString = JSON.stringify(userObj);
+            //   localStorage.setItem(userObj.mail , objString);
+            axios.post('https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app',userObj)
+                .then((response)=>{
+                    showUseronScreen(response.data);
+                    console.log(response)
+                })
+                .catch((err)=>console.log(err));         
         }
+
         itemList.addEventListener('click', removeItem);
         function removeItem(e){
          if(e.target.classList.contains('delete')){
@@ -114,9 +101,27 @@
               }
             }
         }
-      
-          
-   
+
+        function showUseronScreen(User){
+            let li = document.createElement('li');
+            li.className='list-group-item';
+            let userInfo = `${User.user}: ${User.mail}`;
+            li.id = User.mail;
+            li.appendChild(document.createTextNode(userInfo));
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-danger float-right btn-sm delete';       
+            deleteBtn.appendChild(document.createTextNode('X'));
+            li.appendChild(deleteBtn);
+
+            var editBtn = document.createElement('button');
+            editBtn.className = 'btn btn-warning btn-sm float-right edit';           
+            editBtn.appendChild(document.createTextNode('edit'));
+            li.appendChild(editBtn);
+
+            itemList.appendChild(li);
+           
+        }  
     </script>
 </body>
 </html>
