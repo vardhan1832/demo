@@ -122,6 +122,15 @@
             itemList.appendChild(li);
            
         }  
+        document.addEventListener('DOMContentLoaded', ()=>{
+            axios.get('https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app')
+            .then((response)=>{
+                for(var i=0;i<response.data.length;i++){
+                    showUseronScreen(response.data[i]);
+                }
+            })
+            .catch(err=>console.log(err))
+        })
     </script>
 </body>
 </html>
