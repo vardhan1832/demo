@@ -87,18 +87,22 @@
             axios.post('https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app',userObj)
                 .then((response)=>{
                     showUseronScreen(response.data);
-                    console.log(response)
+                   // console.log(response)
                 })
                 .catch((err)=>console.log(err));         
         }
 
         itemList.addEventListener('click', removeItem);
         function removeItem(e){
-         if(e.target.classList.contains('delete')){
-          if(confirm('Are You Sure?')){
-            var li = e.target.parentElement;
-           itemList.removeChild(li);
-              }
+            if(e.target.classList.contains('delete')){
+                if(confirm('Are You Sure?')){
+                    var li = e.target.parentElement;
+                    axios.delete( `https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app/${li.id}`)
+                    .then(res=>console.log(res))
+                    .catch(err=>console.log(err));
+                            
+                    itemList.removeChild(li);
+                }
             }
         }
 
@@ -106,7 +110,8 @@
             let li = document.createElement('li');
             li.className='list-group-item';
             let userInfo = `${User.user}: ${User.mail}`;
-            li.id = User.mail;
+            li.id = User._id;
+            // console.log(li.id)
             li.appendChild(document.createTextNode(userInfo));
 
             var deleteBtn = document.createElement('button');
