@@ -66,9 +66,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script>
 
-  
-
-        function save(event){
+         function save(event){
             event.preventDefault();
             let orderObj={
                 amount : event.target.Amount.value,
@@ -76,18 +74,19 @@
                 table: event.target.table.value
             }
             
-            axios.post('https://crudcrud.com/api/2b060a61083c4d0d980dec393646b54e/app',orderObj)
-                .then((response)=>{
-                    if(response.data.table === 'table1'){
-                        showUserinTable1(response.data);
-                    }else if(response.data.table === 'table2'){
-                        showUserinTable2(response.data)
+            let getdata = async ()=>{
+                 let res = await axios.post('https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app',orderObj)
+                
+                    if(res.data.table === 'table1'){
+                        showUserinTable1(res.data);
+                    }else if(res.data.table === 'table2'){
+                        showUserinTable2(res.data)
                     }else{
-                        showUserinTable3(response.data)
+                        showUserinTable3(res.data)
                     }
-                   // console.log(response.data);               
-                })
-                .catch((err)=>console.log(err));         
+                    console.log(res.data);               
+            }
+            getdata();          
          }
 
          let table1list = document.getElementById('table1Orders')
@@ -110,10 +109,17 @@
             table1list.appendChild(li);
 
             deleteBtn.onclick=()=>{
-                axios.delete( `https://crudcrud.com/api/2b060a61083c4d0d980dec393646b54e/app/${User._id}`)
-                    .then(res=>console.log(res))
-                    .catch(err=>console.log(err));
-                table1list.removeChild(li);
+                let deldata = async ()=>{
+                    try{
+                        let ress = await axios.delete( `https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app/${User._id}`)
+                        console.log(ress)
+                    }   
+                    catch{
+                        console.log(err)
+                    }                        
+                }
+                 deldata();
+                 table1list.removeChild(li);
             }
          }
          function showUserinTable2(User){
@@ -132,9 +138,16 @@
             table2list.appendChild(li);
 
             deleteBtn.onclick=()=>{
-                axios.delete( `https://crudcrud.com/api/2b060a61083c4d0d980dec393646b54e/app/${User._id}`)
-                    .then(res=>console.log(res))
-                    .catch(err=>console.log(err));
+               let deldata = async ()=>{
+                    try{
+                        let ress = await axios.delete( `https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app/${User._id}`)
+                        console.log(ress)
+                    }   
+                    catch{
+                        console.log(err)
+                    }                        
+                }
+                deldata();
                 table2list.removeChild(li);
             }
          }
@@ -154,28 +167,31 @@
             table3list.appendChild(li);
 
             deleteBtn.onclick=()=>{
-                axios.delete( `https://crudcrud.com/api/2b060a61083c4d0d980dec393646b54e/app/${User._id}`)
-                    .then(res=>console.log(res))
-                    .catch(err=>console.log(err));
+                let deldata = async ()=>{
+                    try{
+                        let ress = await axios.delete( `https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app/${User._id}`)
+                        console.log(ress)
+                    }   
+                    catch{
+                        console.log(err)
+                    }                        
+                }
+                deldata();
                 table3list.removeChild(li);
             }
          }
 
-         document.addEventListener('DOMContentLoaded', ()=>{
-            axios.get('https://crudcrud.com/api/2b060a61083c4d0d980dec393646b54e/app')
-            .then((response)=>{
-                for(var i=0;i<response.data.length;i++){
-                    if(response.data[i].table === 'table1'){
-                        showUserinTable1(response.data[i]);
-                    }else if(response.data[i].table === 'table2'){
-                        showUserinTable2(response.data[i])
+         document.addEventListener('DOMContentLoaded', async ()=>{           
+                let respons  = await axios.get('https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app')
+                 for(var i=0;i<respons.data.length;i++){
+                    if(respons.data[i].table === 'table1'){
+                        showUserinTable1(respons.data[i]);
+                    }else if(respons.data[i].table === 'table2'){
+                        showUserinTable2(respons.data[i])
                     }else{
-                        showUserinTable3(response.data[i])
-                    }
-                    
-                }
-            })
-            .catch(err=>console.log(err))
+                        showUserinTable3(respons.data[i])
+                    }                 
+            }                      
         })
     </script>
 </body>
