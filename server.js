@@ -1,21 +1,30 @@
 const http = require('http');
+const fs = require('fs');
+let message = '';
 const server = http.createServer((req,res)=>{
     const url = req.url;
-    if(url === '/home'){
+    const method = req.method;
+    
+    if(url === '/'){
         res.write('<html>')
-        res.write('<body><h1>Welcome Home</h1></body>')
+        res.write(`<body>${message}<br><form action="/message" method="POST"><input type="text" name="message"><button>submit</button></form></body>`)
         res.write('</html>')
         return res.end();
-    }else if(url === '/about'){
-        res.write('<html>')
-        res.write('<body><h1>Welcome to About us page </h1></body>')
-        res.write('</html>')
-        return res.end();
-    }else if(url === '/node'){
-        res.write('<html>')
-        res.write('<body><h1>Welcome to my Node.js project!!</h1></body>')
-        res.write('</html>')
-        return res.end();
+    } 
+    if(url === '/message' && method === 'POST'){
+        const body = [];
+        req.on('data',(chunk)=>{
+            body.push(chunk);
+        })
+        req.on('end',()=>{
+            const parsedBody = Buffer.concat(body).toString();
+            message = parsedBody.split('=')[1];      
+            fs.writeFile('message.txt', message , nxt=>{
+                res.statusCode = 302;
+                res.setHeader('location', '/');
+                return res.end();
+            });
+        })     
     }
 })
 server.listen(4000);
