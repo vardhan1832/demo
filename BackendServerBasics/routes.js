@@ -37,4 +37,4 @@ const mainfunction = (req,res)=>{
 // module.exports.text = 'I am also text';
 
 exports.handler = mainfunction;
-exports.text = 'I am also text';
+exports.text='I am also text';
