@@ -9,5 +9,4 @@ server.use((req,res,next)=>{
 server.use((req,res,next)=>{
     console.log('hiiii')
 })
-
 server.listen(4001);
