@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="p-4 " style="background-color: rgb(0, 0, 0) ;">
+        
+        <h1 style="color: rgb(255, 255, 255);">Orders of customers</h1>
+       
+    </header>
+    <br>
+    
+    <section class="container">
+        <div class="card card-body" style="background-color: aliceblue;">
+            <form action="#" onsubmit="save(event)">
+                <label for="ordAmt" class="form-label">Order amount:</label>
+                <input type="number" class="form-control" name="Amount" id="ordAmt" min="1" max="10000000000" required><br>    
+                
+                <label for="order" class="form-label">Order item:</label>
+                <input type="text" value=" " name="orderdetails" class="form-control" id="order" required><br>
+
+                <label for="selecttable" class="form-label">Table number:</label>
+                <select id="selecttable"  name="table">
+                    <option value="table1">table1</option>
+                    <option value="table2">table2</option>
+                    <option value="table3">table3</option>
+                   
+                </select>
+                  
+                <input  type="submit" id="submitbtn" class="form-control" name="saveOrd" value="SAVEORDER" style="background-color: #d8ebba ;margin-top: 4px; color: rgb(0, 0, 0);"  >
+            </form>
+           
+        </div>
+    </section>
+    <br>
+    <section class="container">
+        <div class="card "  style="background-color: aliceblue;">
+            
+            <ul id="table1Orders" class="table1-orders">  
+                <li><h3>Table 1</h3></li>     
+            </ul>
+        </div>
+        <div class="card"  style="background-color: aliceblue;">
+            
+            <ul id="table2Orders" class="table2-orders">
+                <li><h3>Table 2</h3></li>
+            </ul>
+        </div>
+       
+        <div class="card "  style="background-color: aliceblue;">
+           
+            <ul id="table3Orders" class="table3-orders"> 
+                <li> <h3>Table 3</h3></li>      
+            </ul>
+        </div>
+        
+       
+    </section>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script>
+
+         function save(event){
+            event.preventDefault();
+            let orderObj={
+                amount : event.target.Amount.value,
+                order: event.target.orderdetails.value,
+                table: event.target.table.value
+            }
+            
+            let getdata = async ()=>{
+                 let res = await axios.post('https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app',orderObj)
+                
+                    if(res.data.table === 'table1'){
+                        showUserinTable1(res.data);
+                    }else if(res.data.table === 'table2'){
+                        showUserinTable2(res.data)
+                    }else{
+                        showUserinTable3(res.data)
+                    }
+                    console.log(res.data);               
+            }
+            getdata();          
+         }
+
+         let table1list = document.getElementById('table1Orders')
+         let table2list = document.getElementById('table2Orders')
+         let table3list = document.getElementById('table3Orders')
+
+         function showUserinTable1(User){
+            let li = document.createElement('li');
+            li.className='table1-orders';
+            let userInfo = `${User.amount}  :  ${User.order}  `;
+            li.id = User._id;
+            
+            li.appendChild(document.createTextNode(userInfo));
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn float-right btn-sm delete'; 
+            deleteBtn.style = 'background-color: rgb(235, 192, 192);';    
+            deleteBtn.appendChild(document.createTextNode('del'));
+            li.appendChild(deleteBtn);
+            table1list.appendChild(li);
+
+            deleteBtn.onclick=()=>{
+                let deldata = async ()=>{
+                    try{
+                        let ress = await axios.delete( `https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app/${User._id}`)
+                        console.log(ress)
+                    }   
+                    catch{
+                        console.log(err)
+                    }                        
+                }
+                 deldata();
+                 table1list.removeChild(li);
+            }
+         }
+         function showUserinTable2(User){
+            let li = document.createElement('li');
+            li.className='table2-orders';
+            let userInfo = `${User.amount}  :  ${User.order}  `;
+            li.id = User._id;
+            
+            li.appendChild(document.createTextNode(userInfo));
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn float-right btn-sm delete'; 
+            deleteBtn.style = 'background-color: rgb(235, 192, 192);'      
+            deleteBtn.appendChild(document.createTextNode('del'));
+            li.appendChild(deleteBtn);
+            table2list.appendChild(li);
+
+            deleteBtn.onclick=()=>{
+               let deldata = async ()=>{
+                    try{
+                        let ress = await axios.delete( `https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app/${User._id}`)
+                        console.log(ress)
+                    }   
+                    catch{
+                        console.log(err)
+                    }                        
+                }
+                deldata();
+                table2list.removeChild(li);
+            }
+         }
+         function showUserinTable3(User){
+            let li = document.createElement('li');
+            li.className='table3-orders';
+            let userInfo = `${User.amount}  :  ${User.order}  `;
+            li.id = User._id;
+            
+            li.appendChild(document.createTextNode(userInfo));
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn float-right btn-sm delete'; 
+            deleteBtn.style = 'background-color: rgb(235, 192, 192);'      
+            deleteBtn.appendChild(document.createTextNode('del'));
+            li.appendChild(deleteBtn);
+            table3list.appendChild(li);
+
+            deleteBtn.onclick=()=>{
+                let deldata = async ()=>{
+                    try{
+                        let ress = await axios.delete( `https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app/${User._id}`)
+                        console.log(ress)
+                    }   
+                    catch{
+                        console.log(err)
+                    }                        
+                }
+                deldata();
+                table3list.removeChild(li);
+            }
+         }
+
+         document.addEventListener('DOMContentLoaded', async ()=>{           
+                let respons  = await axios.get('https://crudcrud.com/api/ec7f783fd6924f5497ac1f732c249cb1/app')
+                 for(var i=0;i<respons.data.length;i++){
+                    if(respons.data[i].table === 'table1'){
+                        showUserinTable1(respons.data[i]);
+                    }else if(respons.data[i].table === 'table2'){
+                        showUserinTable2(respons.data[i])
+                    }else{
+                        showUserinTable3(respons.data[i])
+                    }                 
+            }                      
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        body {
+             background-image: url(https://img.rawpixel.com/private/static/images/website/2022-05/rm218batch9-mynt-01.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=3b6c2db2458ba5b47eefb4e92951ddae);
+             background-repeat: no-repeat;
+             background-attachment: scroll;
+             background-size: cover;
+        }
+        p{
+            font-size: x-small;
+            color: rgb(255, 255, 255);
+            text-align: center;
+        }
+        input{
+            width:410px;
+        }       
+       
+        body {
+           font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+         }
+             .container {
+               margin: auto;
+                width: 600px;
+                 overflow: auto;
+                 padding: 3rem 2rem;
+                }
+    </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="p-4 " style="background-color: rgb(0, 0, 0) ;">
+        
+        <div class="row">
+            <div class="col-md  align-self-center ">
+                <h1 style="color: rgb(255, 255, 255);text-align: center;">REGISTER ME</h1>
+            </div>
+            <div class="col-sm align-self-center">
+                <input type="text" class="form-control" id="filter" placeholder="Search Items...">
+            </div>
+          </div>
+    </header>
+        <section  class="container ">
+            <div class="card">
+            <form class="form-control form-control-sm bg-dark text-white border border-dark" action="#" onsubmit="signup(event)">
+              <h1 style="text-align: center;">Book a Call</h1>
+              <p >Book a call slot and our representative will call you within 1hr of the selected time.</p>
+              <hr >
+              <label for="uname"  class="form-label">Name:</label>
+              <input type="text" id="uname" name="username" class="form-control form-control-sm" required>
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" id="email" name="Email"  class="form-control form-control-sm" required>
+              <label for="pass" class="form-label">Password:</label>
+              <input type="password" id="pass" name="pass"  class="form-control form-control-sm" required>
+              <label for="date" class="form-label">Time for call:</label>
+              <input type="date" id="date" name="date" style="margin-bottom: 2px;" class="form-control form-control-sm" > 
+              <input type="time" id="time" name="time" class="form-control form-control-sm" >
+              <input type="submit" class=" form-control form-control-sm" name="Get a call" value="Get a call" style="background-color: rgb(81, 83, 79) ;font-family: Arial, Helvetica, sans-serif ; margin-top: 2px; color: azure;">        
+           </form>
+           <ul id="items" class="list-group">
+          </ul>
+        </div>
+        </section>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script>
+
+        let itemList = document.getElementById('items');
+
+        function signup(event){
+            event.preventDefault();
+            let userObj={
+                user : event.target.username.value,
+                mail : event.target.Email.value,
+                userPass : event.target.pass.value,
+                callDate : event.target.date.value,
+                callTime : event.target.time.value,
+            }
+            //   let objString = JSON.stringify(userObj);
+            //   localStorage.setItem(userObj.mail , objString);
+            axios.post('https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app',userObj)
+                .then((response)=>{
+                    showUseronScreen(response.data);
+                   // console.log(response)
+                })
+                .catch((err)=>console.log(err));         
+        }
+
+        itemList.addEventListener('click', removeItem);
+        function removeItem(e){
+            if(e.target.classList.contains('delete')){
+                if(confirm('Are You Sure?')){
+                    var li = e.target.parentElement;
+                    axios.delete( `https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app/${li.id}`)
+                    .then(res=>console.log(res))
+                    .catch(err=>console.log(err));
+
+                    itemList.removeChild(li);
+                }
+            }
+        }
+        
+
+
+        function showUseronScreen(User){
+            let li = document.createElement('li');
+            li.className='list-group-item';
+            let userInfo = `${User.user}: ${User.mail}`;
+            li.id = User._id;
+            // console.log(li.id)
+            li.appendChild(document.createTextNode(userInfo));
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-danger float-right btn-sm delete';       
+            deleteBtn.appendChild(document.createTextNode('X'));
+            li.appendChild(deleteBtn);
+
+            var editBtn = document.createElement('button');
+            editBtn.className = 'btn btn-warning btn-sm float-right edit';           
+            editBtn.appendChild(document.createTextNode('edit'));
+            li.appendChild(editBtn);
+
+            itemList.appendChild(li);
+
+            editBtn.onclick=()=>{
+                document.getElementById('uname').value = User.user;
+                document.getElementById('email').value = User.mail;
+                document.getElementById('pass').value = User.userPass;
+                document.getElementById('date').value = User.callDate;
+                document.getElementById('time').value = User.callTime;
+
+                axios.delete( `https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app/${User._id}`)
+                    .then(res=>console.log(res))
+                    .catch(err=>console.log(err));
+                itemList.removeChild(li);
+            }     
+        }  
+        document.addEventListener('DOMContentLoaded', ()=>{
+            axios.get('https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app')
+            .then((response)=>{
+                for(var i=0;i<response.data.length;i++){
+                    showUseronScreen(response.data[i]);
+                }
+            })
+            .catch(err=>console.log(err))
+        })
+    </script>
+</body>
+</html>
