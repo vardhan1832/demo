@@ -6,26 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>contact us</title>
     <link rel="stylesheet" href="/css/main.css">
-
+    <link rel="stylesheet" href="/css/forms.css">
 </head>
 <body>
-    <header class="main-header">
-        <nav class="main-header-item-list">
-            <ul>
-                <li><a href="/shop">shop</a></li>
-                <li><a href="/admin/add-product">add product</a></li>
+ <header class="main-header">
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a  href="/shop">Shop</a></li>
+                <li class="main-header__item"><a  href="/admin/add-product">Add Product</a></li>
+            </ul>
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a href="/contactus">Contact us</a></li>
             </ul>
         </nav>
-        <nav class="main-header-item">
-            <a href="/contactus">contact us</a>
-        </nav>
-
     </header>
     <main>
-        <form action="/success" method="POST">
-            <input type="text" name="username">
-            <input type="email" name="email">
-            <button type="submit">submit</button>
+        <form class="product-form" action="/success" method="POST">
+            <div class="form-control">
+                <label for="username">Username:</label>
+                <input type="text" name="username">
+                <label for="email">Email:</label>
+                <input type="email" name="email">
+            </div>        
+            <button class="btn" type="submit">submit</button>
         </form>
     </main>
 </body>

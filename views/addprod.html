@@ -6,24 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>add product</title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/forms.css">
 </head>
 <body>
     <header class="main-header">
-        <nav class="main-header-item-list">
-            <ul>
-                <li><a href="/shop">shop</a></li>
-                <li><a href="/admin/add-product">add product</a></li>
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a  href="/shop">Shop</a></li>
+                <li class="main-header__item"><a  href="/admin/add-product">Add Product</a></li>
+            </ul>
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a href="/contactus">Contact us</a></li>
             </ul>
         </nav>
-        <nav class="main-header-item">
-            <a href="/contactus">contact us</a>
-        </nav>
-
     </header>
     <main>
-        <form action="/admin/product" method="POST">
-            <input type="text" name="title"><input type="number" name="size">
-            <button type="submit">Add product</button>
+        <form class="product-form" action="/admin/product" method="POST">
+            <div class="form-control">
+                <label for="title">Product:</label>
+                <input type="text" name="title" id="title">
+                <label for="size">Amount</label>
+                <input type="number" name="size">
+            </div>
+            <button class="btn" type="submit">Add product</button>
         </form>
     </main>
     
