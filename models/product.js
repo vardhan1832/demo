@@ -18,7 +18,8 @@ module.exports=class Product{
         this.size = a;
     }
     save(){
-      readProductsFromFile(arr=>{
+        this.id = Math.random().toString();
+      readProductsFromFile(arr=>{         
             arr.push(this);
             fs.writeFile(p,JSON.stringify(arr),err=>{
                 console.log(err);

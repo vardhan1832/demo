@@ -10,9 +10,14 @@ exports.postAddProducts = (req,res,next)=>{
     product.save();
     res.redirect('/shop')
 }
+exports.getProductDetails = (req,res,next)=>{
+    const prodId = req.params.productId;
+    console.log(prodId);
+    res.redirect('/shop')
+}
 exports.getShop = (req,res,next)=>{
     Product.fetchall((pro)=>{
-        console.log(pro);
+        //console.log(pro);
     });
     res.sendFile(path.join(rootDir,'views','shop.html'))
 }
