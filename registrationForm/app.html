@@ -57,8 +57,8 @@
               <input type="text" id="uname" name="username" class="form-control form-control-sm" required>
               <label for="email" class="form-label">Email:</label>
               <input type="email" id="email" name="Email"  class="form-control form-control-sm" required>
-              <label for="pass" class="form-label">Password:</label>
-              <input type="password" id="pass" name="pass"  class="form-control form-control-sm" required>
+              <label for="number" class="form-label">phonenumber:</label>
+              <input type="number" id="Number" name="number"  class="form-control form-control-sm" required>
               <label for="date" class="form-label">Time for call:</label>
               <input type="date" id="date" name="date" style="margin-bottom: 2px;" class="form-control form-control-sm" > 
               <input type="time" id="time" name="time" class="form-control form-control-sm" >
@@ -78,16 +78,16 @@
             let userObj={
                 user : event.target.username.value,
                 mail : event.target.Email.value,
-                userPass : event.target.pass.value,
+                phonenumber : event.target.number.value,
                 callDate : event.target.date.value,
                 callTime : event.target.time.value,
             }
             //   let objString = JSON.stringify(userObj);
             //   localStorage.setItem(userObj.mail , objString);
-            axios.post('https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app',userObj)
+            axios.post('http://localhost:3000/user/add-user',userObj)
                 .then((response)=>{
-                    showUseronScreen(response.data);
-                   // console.log(response)
+                    showUseronScreen(response.data.userdetails);
+                    console.log(response.data)
                 })
                 .catch((err)=>console.log(err));         
         }
@@ -97,7 +97,7 @@
             if(e.target.classList.contains('delete')){
                 if(confirm('Are You Sure?')){
                     var li = e.target.parentElement;
-                    axios.delete( `https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app/${li.id}`)
+                    axios.delete( `http://localhost:3000/user/add-user/${li.id}`)
                     .then(res=>console.log(res))
                     .catch(err=>console.log(err));
 
@@ -111,8 +111,8 @@
         function showUseronScreen(User){
             let li = document.createElement('li');
             li.className='list-group-item';
-            let userInfo = `${User.user}: ${User.mail}`;
-            li.id = User._id;
+            let userInfo = `${User.name}: ${User.email}`;
+            li.id = User.id;
             // console.log(li.id)
             li.appendChild(document.createTextNode(userInfo));
 
@@ -129,23 +129,24 @@
             itemList.appendChild(li);
 
             editBtn.onclick=()=>{
-                document.getElementById('uname').value = User.user;
-                document.getElementById('email').value = User.mail;
-                document.getElementById('pass').value = User.userPass;
+                document.getElementById('uname').value = User.name;
+                document.getElementById('email').value = User.email;
+                document.getElementById('Number').value = User.phoneNumber;
                 document.getElementById('date').value = User.callDate;
                 document.getElementById('time').value = User.callTime;
 
-                axios.delete( `https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app/${User._id}`)
+                axios.delete( `http://localhost:3000/user/add-user/${li.id}`)
                     .then(res=>console.log(res))
                     .catch(err=>console.log(err));
                 itemList.removeChild(li);
             }     
         }  
         document.addEventListener('DOMContentLoaded', ()=>{
-            axios.get('https://crudcrud.com/api/52a196bd46b74f848fb208e149ec2fa1/app')
+            axios.get('http://localhost:3000/user/add-user')
             .then((response)=>{
-                for(var i=0;i<response.data.length;i++){
-                    showUseronScreen(response.data[i]);
+                console.log(response)
+                for(var i=0;i<response.data.allusers.length;i++){
+                    showUseronScreen(response.data.allusers[i]);
                 }
             })
             .catch(err=>console.log(err))
